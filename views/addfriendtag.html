@@ -1,0 +1,21 @@
+{{template "header.html" .}}
+<div class="row">
+    <div class="col-md-4 col-md-offset-4">
+        <form method="post" action="/friendlink">
+            <div class="form-group">
+                <label for="name">名称</label>
+                <input type="text" class="form-control" id="name" name="name" placeholder="名称" />
+            </div>
+            <div class="form-group">
+                <label for="url">地址</label>
+                <input type="url" class="form-control" id="url" name="url" placeholder="地址" />
+            </div>
+            <div class="form-group">
+                <label for="priority">权重</label>
+                <input type="number" class="form-control" id="priority" name="priority" placeholder="权重" />
+            </div>
+            <button type="submit" class="btn btn-default">添加</button>
+        </form>
+    </div>
+</div>
+{{template "footer.html" .}}

@@ -1,0 +1,31 @@
+{{template "header.html" .}}
+<style>
+    .content {
+        min-height: 440px;
+    }
+</style>
+<div class="row">
+    <div class="col-md-10 col-md-offset-1">
+        <form class="form-horizontal" method="post" action="/post">
+            <div class="form-group">
+                <label for="title" class="col-sm-1 control-label">标题</label>
+                <div class="col-sm-11">
+                    <input type="text" class="form-control" id="title" name="title" placeholder="标题" />
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="tags" class="col-sm-1 control-label">标签</label>
+                <div class="col-sm-11">
+                    <input type="text" class="form-control" id="tags" name="tags" placeholder="标签，请用逗号隔开" />
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-sm-12">
+                    <textarea class="form-control content" id="content" name="content" placeholder="正文" ></textarea>
+                </div>
+            </div>
+            <button type="submit" class="btn btn-default">发布</button>
+        </form>
+    </div>
+</div>
+{{template "footer.html" .}}

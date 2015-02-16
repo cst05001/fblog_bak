@@ -1,0 +1,24 @@
+{{template "header.html" .}}
+<div class="row">
+    <div class="col-md-8 col-md-offset-2">
+        <table class="table table-striped table-striped table-condensed">
+            <tr><th>标签名</th><th>优先级</th><th>作为目录</th><th>操作</th></tr>
+            {{range $_, $tag := $.tags}}
+            <form method="post" action="/tag/{{$tag.Id}}">
+                <tr>
+                    <td><input type="text" name="name" value="{{$tag.Name}}"></input></td>
+                    <td><input type="text" name="priority" value="{{$tag.Priority}}"></input></td>
+                    <td>
+                        <select name="iscategory">
+                            <option value="false" {{if eq $tag.IsCategory false}}selected="selected"{{end}}>false</option>
+                            <option value="true" {{if eq $tag.IsCategory true}}selected="selected"{{end}}>true</option>
+                        </select>
+                    </td>
+                    <td><button type="submit">修改</button></td>
+                </tr>
+            </form>
+            {{end}}
+        </table>
+    </div>
+</div>
+{{template "footer.html" .}}
