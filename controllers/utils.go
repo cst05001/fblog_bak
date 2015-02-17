@@ -55,6 +55,29 @@ func PutFriendLinks(this beego.Controller) error {
 }
 
 
+func PutPostsByCategory(this beego.Controller, tag *models.Tag) error {
+    postsPre := make([]models.Post, 0)
+    posts := make([]models.Post, 0)
+    o := orm.NewOrm()
+    _, err := o.QueryTable("post").OrderBy("-timestamp").RelatedSel().All(&postsPre)
+    if err != nil {
+        beego.Error("controller> Utils> PutPostsByCategory> %v\n", err)
+        return err
+    }
+    for _, post := range postsPre {
+        m2m := o.QueryM2M(&post, "Tags")
+        if m2m.Exist(tag) {
+            posts = append(posts, post)
+        }
+    }
+    for i, _ := range posts {
+        posts[i].Content = string(blackfriday.MarkdownBasic([]byte(posts[i].Content)))
+    }
+
+    this.Data["posts"] = posts
+    return nil
+}
+
 func PutAllPostsInHtml(this beego.Controller) error {
     posts := make([]models.Post, 0)
     o := orm.NewOrm()

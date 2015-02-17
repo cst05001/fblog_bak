@@ -16,7 +16,7 @@
             <div class="collapse navbar-collapse">
                 <ul class="nav navbar-nav">
                     {{range $_, $category := $.categories}}
-                    <li><a href="/post/tag/$category.Id">{{$category.Name}}</a></li>
+                    <li><a href="/category/{{$category.Id}}">{{$category.Name}}</a></li>
                     {{end}}
                 </ul>
                 <ul class="nav navbar-nav navbar-right">

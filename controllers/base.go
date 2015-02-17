@@ -2,6 +2,7 @@ package controllers
 
 import (
     "fmt"
+    "strconv"
 	"github.com/astaxie/beego"
     "github.com/astaxie/beego/orm"
     "github.com/astaxie/beego/validation"
@@ -133,4 +134,30 @@ func (this *BaseController) Logout() {
     this.Ctx.WriteString("已经注销,回到<a href=\"/\">首页</a>.")
 }
 
+func (this *BaseController) Index() {
+    PutBaseInfo(this.Controller)
+    PutAllPostsInHtml(this.Controller)
+    PutCategories(this.Controller)
+    PutFriendLinks(this.Controller)
+	this.TplNames = "index.html"
+    this.Render()
+}
 
+func (this *BaseController) Category() {
+    id, err := strconv.Atoi(this.Ctx.Input.Param(":id"))
+    if err != nil {
+        beego.Error("controllers> Base> Category(): %v\n", err)
+        this.Ctx.WriteString("无法获得标签ID")
+        return
+    }
+    tag := models.NewTag()
+    tag.Id = int64(id)
+    tag.Get()
+    PutBaseInfo(this.Controller)
+    PutPerm(this.Controller, nil)
+    PutCategories(this.Controller)
+    PutPostsByCategory(this.Controller, tag)
+    PutFriendLinks(this.Controller)
+    this.TplNames = "index.html"
+    this.Render()
+}
