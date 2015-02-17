@@ -11,6 +11,7 @@ type UserController struct {
 
 func (this *UserController) Get() {
     PutBaseInfo(this.Controller)
+    PutFriendLinks(this.Controller)
     PutCategories(this.Controller)
     v := this.GetSession("user")
     if v == nil {
