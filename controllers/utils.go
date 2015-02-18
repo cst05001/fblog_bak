@@ -2,6 +2,7 @@ package controllers
 
 import (
     "fmt"
+    "time"
 	"github.com/astaxie/beego"
     "github.com/astaxie/beego/orm"
     "github.com/cst05001/fblog/models"
@@ -19,8 +20,20 @@ func GetPost(id int) *models.Post {
     return p
 }
 
+func FixTimeLocation(t time.Time) time.Time {
+    location, err := time.LoadLocation("Local")
+    if err != nil {
+        beego.Error("controller> utils> FixTimeLocation(): %v\n", err)
+        return t
+    } else {
+        t = t.In(location)
+        return t
+    }
+}
+
 func GetPostInHtml(id int) *models.Post {
     p := GetPost(id)
+    p.Timestamp = FixTimeLocation(p.Timestamp)
     p.Content = string(blackfriday.MarkdownBasic([]byte(p.Content)))
     return p
 }
@@ -71,6 +84,7 @@ func PutPostsByCategory(this beego.Controller, tag *models.Tag) error {
         }
     }
     for i, _ := range posts {
+        posts[i].Timestamp = FixTimeLocation(posts[i].Timestamp)
         posts[i].Content = string(blackfriday.MarkdownBasic([]byte(posts[i].Content)))
     }
 
@@ -87,6 +101,7 @@ func PutAllPostsInHtml(this beego.Controller) error {
         return err
     }
     for i, _ := range posts {
+        posts[i].Timestamp = FixTimeLocation(posts[i].Timestamp)
         posts[i].Content = string(blackfriday.MarkdownBasic([]byte(posts[i].Content)))
     }
 
