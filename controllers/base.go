@@ -154,7 +154,7 @@ func (this *BaseController) Category() {
     }
     tag := models.NewTag()
     tag.Id = int64(id)
-    tag.Get()
+    tag = tag.Get()
     PutBaseInfo(this.Controller)
     blog := this.Data["blog"].(*models.Blog)
     this.Data["title"] = fmt.Sprintf("%s/%s", blog.Name, tag.Name)

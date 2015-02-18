@@ -50,7 +50,12 @@ func (this *Tag) Update() *Tag {
 // 这个Get是通过Name字段，不是通过Id
 func (this *Tag) Get() *Tag {
     o := orm.NewOrm()
-    err := o.QueryTable("tag").Filter("name", this.Name).One(this)
+    var err error
+    if len(this.Name) == 0 {
+        err = o.Read(this)
+    } else {
+        err = o.QueryTable("tag").Filter("name", this.Name).One(this)
+    }
     if err != nil {
         return nil
     }
