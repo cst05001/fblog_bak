@@ -25,7 +25,7 @@ func (this *PostController) Get() {
 
     post := GetPostInHtml(i)
     PutPerm(this.Controller, post)
-
+    this.Data["title"] = post.Title
     this.Data["post"] = post
 
     this.TplNames = "post.html"

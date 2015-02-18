@@ -139,6 +139,8 @@ func (this *BaseController) Index() {
     PutAllPostsInHtml(this.Controller)
     PutCategories(this.Controller)
     PutFriendLinks(this.Controller)
+    blog := this.Data["blog"].(*models.Blog)
+    this.Data["title"] = blog.Name
 	this.TplNames = "index.html"
     this.Render()
 }
@@ -153,6 +155,8 @@ func (this *BaseController) Category() {
     tag := models.NewTag()
     tag.Id = int64(id)
     tag.Get()
+    blog := this.Data["blog"].(*models.Blog)
+    this.Data["title"] = fmt.Sprintf("%s/%s", blog.Name, tag.Name)
     PutBaseInfo(this.Controller)
     PutPerm(this.Controller, nil)
     PutCategories(this.Controller)
