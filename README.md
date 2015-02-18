@@ -1,4 +1,4 @@
-# fblog v0.4
+# fblog v0.5
 
 ## 说明
 这个程序是用 beego 框架实现的。
@@ -12,6 +12,10 @@
 * 运行服务后，URL /install 执行安装程序。
 
 ## Changelog
+
+### v0.5
+
+添加了浏览器Title支持以及favicon支持
 
 ### v0.4
 
