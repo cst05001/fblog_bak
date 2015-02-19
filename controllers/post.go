@@ -22,6 +22,7 @@ func (this *PostController) Get() {
 
     PutBaseInfo(this.Controller)
     PutCategories(this.Controller)
+    PutFriendLinks(this.Controller)
 
     post := GetPostInHtml(i)
     PutPerm(this.Controller, post)
