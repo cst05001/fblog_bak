@@ -1,11 +1,15 @@
         <div class="row">
-            <div class="col-md-12">
+            <div class="col-md-10 col-md-offset-1">
                 友情链接：
                 {{range $_, $friendlink := $.friendlinks}}
                 <a href="{{$friendlink.Url}}">{{$friendlink.Name}}</a>
                 {{end}}
             </div>
         </div>
+        <div class="row">
+            <div class="col-md-10 col-md-offset-1">
+                Powered by <a href="https://github.com/cst05001/fblog">fblog</a>
+            </div>
     </div>
 </body>
 </html>
