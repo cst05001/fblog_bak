@@ -160,7 +160,7 @@ func (this *BaseController) Category() {
     this.Data["title"] = fmt.Sprintf("%s/%s", blog.Name, tag.Name)
     PutPerm(this.Controller, nil)
     PutCategories(this.Controller)
-    PutPostsByCategory(this.Controller, tag)
+    PutPostsByCategory(this.Controller, tag, false)
     PutFriendLinks(this.Controller)
     this.TplNames = "index.html"
     this.Render()

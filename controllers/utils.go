@@ -68,11 +68,16 @@ func PutFriendLinks(this beego.Controller) error {
 }
 
 
-func PutPostsByCategory(this beego.Controller, tag *models.Tag) error {
+func PutPostsByCategory(this beego.Controller, tag *models.Tag, fillContent bool) error {
+    var err error
     postsPre := make([]models.Post, 0)
     posts := make([]models.Post, 0)
     o := orm.NewOrm()
-    _, err := o.QueryTable("post").OrderBy("-timestamp").RelatedSel().All(&postsPre)
+    if fillContent {
+        _, err = o.QueryTable("post").OrderBy("-timestamp").RelatedSel().All(&postsPre)
+    } else {
+        _, err = o.QueryTable("post").OrderBy("-timestamp").RelatedSel().All(&postsPre, "Id", "Title", "User", "Timestamp", "Tags")
+    }
     if err != nil {
         beego.Error("controller> Utils> PutPostsByCategory> %v\n", err)
         return err
