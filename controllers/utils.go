@@ -38,9 +38,10 @@ func GetPostInHtml(id int) *models.Post {
     return p
 }
 
-func PutBaseInfo(this beego.Controller) {
+func PutBaseInfo(this beego.Controller) *models.Blog {
     blog := models.NewBlog()
     this.Data["blog"] = blog
+    return blog
 }
 
 func PutCategories(this beego.Controller) error {
@@ -97,13 +98,13 @@ func PutPostsByCategory(this beego.Controller, tag *models.Tag, fillContent bool
     return nil
 }
 
-func PutAllPostsInHtml(this beego.Controller) error {
+func PutAllPostsInHtml(this beego.Controller) ([]models.Post, error) {
     posts := make([]models.Post, 0)
     o := orm.NewOrm()
     _, err := o.QueryTable("post").OrderBy("-timestamp").RelatedSel().All(&posts)
     if err != nil {
         beego.Error("controller> Utils> GetCategories()> %v\n", err)
-        return err
+        return nil, err
     }
     for i, _ := range posts {
         posts[i].Timestamp = FixTimeLocation(posts[i].Timestamp)
@@ -111,7 +112,7 @@ func PutAllPostsInHtml(this beego.Controller) error {
     }
 
     this.Data["posts"] = posts
-    return nil
+    return posts, nil
 }
 
 func GetUserFromSession(this beego.Controller) *models.User {

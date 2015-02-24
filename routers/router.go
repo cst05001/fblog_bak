@@ -7,6 +7,7 @@ import (
 
 func init() {
     beego.Router("/", &controllers.BaseController{}, "get:Index")
+    beego.Router("/rss", &controllers.BaseController{}, "get:IndexRss")
     beego.Router("/category/:id:int", &controllers.BaseController{}, "get:Category")
 
     beego.Router("/install", &controllers.BaseController{}, "get:InstallHtml")

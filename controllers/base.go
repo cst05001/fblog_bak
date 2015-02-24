@@ -2,9 +2,11 @@ package controllers
 
 import (
     "fmt"
+    "time"
     "strconv"
 	"github.com/astaxie/beego"
     "github.com/astaxie/beego/orm"
+    "github.com/gorilla/feeds"
     "github.com/astaxie/beego/validation"
     "github.com/cst05001/fblog/models"
 )
@@ -143,6 +145,52 @@ func (this *BaseController) Index() {
     this.Data["title"] = blog.Name
 	this.TplNames = "index.html"
     this.Render()
+}
+
+func (this *BaseController) IndexRss() {
+    /*
+    PutBaseInfo(this.Controller)
+    PutAllPostsInHtml(this.Controller)
+    PutCategories(this.Controller)
+    PutFriendLinks(this.Controller)
+    blog := this.Data["blog"].(*models.Blog)
+    this.Data["title"] = blog.Name
+	this.TplNames = "index.html"
+    this.Render()
+    */
+    blog := PutBaseInfo(this.Controller)
+    rss_link := beego.AppConfig.String("rss_link")
+    rss_description := beego.AppConfig.String("rss_description")
+    now := time.Now()
+    feed := &feeds.Feed{
+        Title:       blog.Name,
+        Link:        &feeds.Link{Href: rss_link},
+        Description: rss_description,
+        //Author:      &feeds.Author{"Jason Moiron", "jmoiron@jmoiron.net"},
+        Created:     now,
+    }
+    posts, err := PutAllPostsInHtml(this.Controller)
+    if err != nil {
+        beego.Error(fmt.Sprintf("controllers> Base> IndexRss> %v\n", err))
+        return
+    }
+    items := make([]*feeds.Item, len(posts))
+    for k, _ := range posts {
+        items[k] = &feeds.Item{
+            Title:          posts[k].Title,
+            Link:           &feeds.Link{Href:   fmt.Sprintf("%s/post/%d", rss_link, posts[k].Id)},
+            Description:    posts[k].Content,
+            Created:        posts[k].Timestamp,
+        }
+    }
+    feed.Items = items
+    rss, err := feed.ToRss()
+    if err != nil {
+        beego.Error(fmt.Sprintf("controllers> Base> IndexRss> %v\n", err))
+        return
+    }
+
+    this.Ctx.WriteString(rss)
 }
 
 func (this *BaseController) Category() {
