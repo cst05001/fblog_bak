@@ -146,6 +146,13 @@ func (this *BaseController) Index() {
 }
 
 func (this *BaseController) Category() {
+    show_content, err := beego.AppConfig.Bool("category_show_content")
+    if err != nil {
+        beego.Error(fmt.Sprintf("controllers> BaseController> Category(): %v\n", err))
+        show_content = false
+    }
+    this.Data["show_content"] = show_content
+
     id, err := strconv.Atoi(this.Ctx.Input.Param(":id"))
     if err != nil {
         beego.Error("controllers> Base> Category(): %v\n", err)

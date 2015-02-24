@@ -76,7 +76,7 @@ func PutPostsByCategory(this beego.Controller, tag *models.Tag, fillContent bool
     if fillContent {
         _, err = o.QueryTable("post").OrderBy("-timestamp").RelatedSel().All(&postsPre)
     } else {
-        _, err = o.QueryTable("post").OrderBy("-timestamp").RelatedSel().All(&postsPre, "Id", "Title", "User", "Timestamp", "Tags")
+        _, err = o.QueryTable("post").OrderBy("-timestamp").RelatedSel().All(&postsPre, "Id", "Title", "User", "Timestamp")
     }
     if err != nil {
         beego.Error("controller> Utils> PutPostsByCategory> %v\n", err)

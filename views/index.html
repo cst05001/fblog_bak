@@ -5,9 +5,11 @@
         <div>
             <h1><a href="/post/{{$post.Id}}">{{$post.Title}}</a></h1>
             <div>作者：{{$post.User.Name}} 创建时间: {{date $post.Timestamp "Y-m-d H:i:s"}}</div>
+            {{if $.show_content}}
             <div>
                 {{str2html $post.Content}}
             </div>
+            {{end}}
         </div>
         {{end}}
     </div>
